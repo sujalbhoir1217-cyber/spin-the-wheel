@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spin & Win 🎁</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0d0d0d,#1c1c1c);
+  font-family:Arial, sans-serif;
+  color:#fff;
+}
+
+/* === MAIN LAYOUT === */
+.wrapper{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.brand{
+  width:70px;
+  opacity:0.9;
+}
+.container{
+  text-align:center;
+  max-width:360px;
+}
+
+h2{
+  margin-bottom:10px;
+}
+
+.pointer{
+  width:0;
+  height:0;
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-bottom:28px solid red;
+  margin:auto;
+}
+
+.wheel{
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  border:8px solid #fff;
+  background: conic-gradient(
+    #ffd700 0deg 144deg,
+    #ffb700 144deg 252deg,
+    #ff8c00 252deg 324deg,
+    #ff0000 324deg 360deg
+  );
+  margin:15px auto;
+  transition:transform 4s cubic-bezier(.17,.67,.25,1);
+}
+
+button{
+  padding:14px 30px;
+  font-size:17px;
+  border:none;
+  border-radius:12px;
+  background:#ffd700;
+  cursor:pointer;
+  font-weight:bold;
+}
+button:disabled{
+  background:#666;
+}
+
+.result{
+  margin-top:15px;
+  font-size:18px;
+}
+
+.coupon{
+  margin-top:8px;
+  font-size:18px;
+  color:#00ffcc;
+}
+
+.note{
+  margin-top:12px;
+  font-size:14px;
+  color:#ccc;
+}
+
+.ig-btn{
+  display:inline-block;
+  margin-top:10px;
+  padding:10px 22px;
+  background:#e1306c;
+  border-radius:25px;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+/* === SIDE HIGHLIGHT BANNER === */
+.side-note{
+  position:fixed;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  background:linear-gradient(135deg,#ff0057,#ff7a00);
+  padding:14px 18px;
+  border-radius:12px;
+  text-align:center;
+  width:140px;
+  box-shadow:0 0 15px rgba(255,0,87,0.6);
+  z-index:999;
+  animation:pulse 1.5s infinite;
+}
+.side-note b{
+  color:#fff700;
+}
+.side-note a{
+  display:block;
+  margin-top:8px;
+  padding:8px;
+  background:#000;
+  color:#fff;
+  text-decoration:none;
+  border-radius:20px;
+  font-size:14px;
+  font-weight:bold;
+}
+
+/* Animation */
+@keyframes pulse{
+  0%{transform:translateY(-50%) scale(1);}
+  50%{transform:translateY(-50%) scale(1.05);}
+  100%{transform:translateY(-50%) scale(1);}
+}
+
+/* Mobile View */
+@media(max-width:600px){
+  .wrapper{
+    flex-direction:column;
+  }
+  .brand{
+    width:60px;
+  }
+  .side-note{
+    bottom:10px;
+    top:auto;
+    right:50%;
+    transform:translateX(50%);
+    width:90%;
+  }
+}
+
+/* === END === */
+</style>
+</head>
+
+<body>
+
+<!-- SIDE HIGHLIGHT -->
+<div class="side-note">
+  📸 <b>IMPORTANT</b><br>
+  Screenshot le kar<br>
+  <b>Share / DM</b><br>
+  👉 <a href="https://www.instagram.com/sujal_surprise_links/" target="_blank">
+    @sujal_surprise_links
+  </a>
+</div>
+
+<div class="wrapper">
+  <img src="brand.jpeg" class="brand" alt="Brand">
+
+  <div class="container">
+    <h2>🎡 Spin & Win</h2>
+
+    <div class="pointer"></div>
+    <div class="wheel" id="wheel"></div>
+
+    <button id="spinBtn" onclick="spin()">SPIN NOW</button>
+
+    <div class="result" id="result"></div>
+    <div class="coupon" id="coupon"></div>
+
+    <div class="note">
+      ⚠ Coupon code sirf <b>ek baar</b> dikhega
+    </div>
+
+    <a class="ig-btn" href="https://www.instagram.com/sujal_surprise_links/" target="_blank">
+      📩 Open Instagram & DM
+    </a>
+  </div>
+
+  <img src="brand.jpeg" class="brand" alt="Brand">
+</div>
+
+<script>
+const spinBtn = document.getElementById("spinBtn");
+
+/* Already spun */
+if(localStorage.getItem("wheelSpun")){
+  spinBtn.disabled = true;
+  spinBtn.innerText = "SPIN USED";
+}
+
+/* Coupon already seen */
+if(localStorage.getItem("couponShown")){
+  document.getElementById("coupon").innerHTML =
+    "❌ Coupon already viewed";
+}
+
+function spin(){
+  if(localStorage.getItem("wheelSpun")){
+    alert("❌ Aap apna spin use kar chuke hain!");
+    return;
+  }
+
+  localStorage.setItem("wheelSpun","yes");
+
+  const wheel = document.getElementById("wheel");
+  const rand = Math.random()*100;
+  let offer="", deg=0;
+
+  if(rand < 40){ offer="10% OFF"; deg=720+40; }
+  else if(rand < 70){ offer="15% OFF"; deg=720+120; }
+  else if(rand < 90){ offer="20% OFF"; deg=720+210; }
+  else{ offer="30% OFF 🎉 Lucky!"; deg=720+300; }
+
+  wheel.style.transform = `rotate(${deg}deg)`;
+
+  setTimeout(()=>{
+    document.getElementById("result").innerHTML =
+      "🎁 You Won: <b>"+offer+"</b><br>DM with Screenshot on Instagram";
+
+    if(!localStorage.getItem("couponShown")){
+      const code="SUJAL"+Math.floor(1000+Math.random()*9000);
+      document.getElementById("coupon").innerHTML =
+        "🎟 Coupon Code: <b>"+code+"</b>";
+      localStorage.setItem("couponShown","yes");
+    }
+
+    spinBtn.disabled = true;
+    spinBtn.innerText = "SPIN USED";
+  },4000);
+}
+</script>
+
+</body>
+</html>
